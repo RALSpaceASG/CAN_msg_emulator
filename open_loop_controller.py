@@ -39,8 +39,8 @@ def msg_id_parse(user_msg):
 
 def controlword_parse(user_cword):
     return {
-        'en_op': 0x0007,
-        'dis_op': 0x000F
+        'en_op': 0x000f,
+        'dis_op': 0x0007
     }.get(user_cword,None)
 
 
@@ -78,7 +78,7 @@ def send_data(canbus,cmd_msg_id,cmd_msg_data):
     try:
         canbus.send(msg)
         print ""
-        print msg
+        print "CAN Message: ", msg
         print ""
     except can.CanError:
         print ""
@@ -199,47 +199,74 @@ def user_dsp_402_emulator(canbus):
         else:
             print "node_id invalid"
 
+
+
+
 def drive(canbus, node_id, target_velocity):
-        
+
+    msg_data = [0,0,0,0,0,0,0,0]
+
+    print "Command node to DRIVE"
+
     msg_header = msg_id_parse('rpdo6') + node_id
     controlword = controlword_parse('en_op')
     target_velocity_vl = vl_target_parse(target_velocity);
     
+    print "Node being commanded: ", hex(node_id) 
+    print "RPDO_6 Message:\r\n\tcontrolword = ", hex(controlword), "\r\n\ttarget_velocity_vl (hex) = ", hex(target_velocity_vl)
+
+    msg_data[0] = (controlword >> 8) & 0xff
+    msg_data[1] = (controlword & 0xff)
+    msg_data[2] = (target_velocity_vl >> 8) & 0xff
+    msg_data[3] = (target_velocity_vl & 0xff)
+
+    send_data(canbus, msg_header, msg_data)
+
+
+
+def stop(canbus, node_id):
+
+    msg_data = [0,0,0,0,0,0,0,0]
+
+    target_velocity = 0
+
+    print "Command Node to STOP"
+    
+    msg_header = msg_id_parse('rpdo6') + node_id
+    controlword = controlword_parse('dis_op')
+    target_velocity_vl = vl_target_parse(target_velocity);
     
     print "Node being commanded: ", hex(node_id) 
     print "RPDO_6 Message:\r\n\tcontrolword = ", hex(controlword), "\r\n\ttarget_velocity (float) = ", target_velocity, "\r\n\ttarget_velocity_vl (int16) = ", target_velocity_vl, "\r\n\ttarget_velocity_vl (hex) = ", hex(target_velocity_vl)
 
+    msg_data[0] = (controlword >> 8) & 0xff
+    msg_data[1] = (controlword & 0xff)
+    msg_data[2] = (target_velocity_vl >> 8) & 0xff
+    msg_data[3] = (target_velocity_vl & 0xff)
 
-
-    data[0] = set_get_flag
-    data[1] = (msg_index >> 8) & 0xff
-    data[2] = msg_index & 0xff
-    data[3] = msg_sub_index
-
-    print hex(msg_header) 
-
-
-def stop(canbus, node_id):
-    vsdsdffgsdf
+    send_data(canbus, msg_header, msg_data)
 
 
 
 
-def run_node_drive_stop(node_id,canbus):
+def run_node_drive_stop(canbus):
     
+    node_id = 'frd'
     while 1:
-        drive(canbus, node_id_parse(node_id), -0.75)
-        time.sleep(10)
-        drive(canbus,node_id_parse(node_id), 0.25)
-        time.sleep(10)
-        stop(canbus, node_id_parse(node_id))
-        time.sleep(10)
+        drive(canbus, node_id_parse('fld'), 0.75)
+        drive(canbus, node_id_parse('frd'), 0.75)
+        drive(canbus, node_id_parse('mld'), 0.75)
+        time.sleep(5)
+        stop(canbus, node_id_parse('fld'))
+        stop(canbus, node_id_parse('frd'))
+        stop(canbus, node_id_parse('mld'))
+        time.sleep(5)
 
 
 
 
 
-def begin_system():
+def system_start():
     if sys.argv[1] == 'user':
         print "Manual Mode Selected"  
         user_dsp_402_emulator(init_bus())
@@ -249,7 +276,7 @@ def begin_system():
         print "Auto Mode - Executing Predefined Script"
 
         if sys.argv[2] == '1':
-            run_node_drive_stop('fld',init_bus())
+            run_node_drive_stop(init_bus())
 
 
     else:
@@ -262,5 +289,5 @@ def begin_system():
 
 
 if __name__ == "__main__":
-    begin_system()
+    system_start()
     
