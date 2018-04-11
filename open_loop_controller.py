@@ -253,9 +253,18 @@ def run_node_drive_stop(canbus):
     
     node_id = 'frd'
     while 1:
-        drive(canbus, node_id_parse('fld'), 0.75)
-        drive(canbus, node_id_parse('frd'), 0.75)
-        drive(canbus, node_id_parse('mld'), 0.75)
+        drive(canbus, node_id_parse('fld'), 0.5)
+        drive(canbus, node_id_parse('frd'), 0.5)
+        drive(canbus, node_id_parse('mld'), 0.5)
+        time.sleep(5)
+        stop(canbus, node_id_parse('fld'))
+        stop(canbus, node_id_parse('frd'))
+        stop(canbus, node_id_parse('mld'))
+        time.sleep(5)
+
+        drive(canbus, node_id_parse('fld'), -0.5)
+        drive(canbus, node_id_parse('frd'), -0.5)
+        drive(canbus, node_id_parse('mld'), -0.5)
         time.sleep(5)
         stop(canbus, node_id_parse('fld'))
         stop(canbus, node_id_parse('frd'))
