@@ -3,5 +3,9 @@
 echo "Initialising CAN Interface to USBtin device"
 
 slcan_attach -f -s8 -o $1
-slcand $1 $2
-sudo ifconfig $2 up
+
+slcand $1 slcan0
+
+sudo ifconfig slcan0 txqueuelen 1000
+
+sudo ifconfig slcan0 up
