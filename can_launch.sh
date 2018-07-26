@@ -6,6 +6,6 @@ slcan_attach -f -s8 -o $1
 
 slcand $1 slcan0
 
-sudo ifconfig slcan0 txqueuelen 1000
-
 sudo ifconfig slcan0 up
+
+sudo ifconfig slcan0 txqueuelen 1000
