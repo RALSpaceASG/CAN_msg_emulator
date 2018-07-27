@@ -20,7 +20,7 @@ echo "mid_left_steer_joint commanded to HOME_POSITION + 10 deg"
 cansend slcan0 31F#000F0002A9C5
 
 echo "mid_right_steer joint commanded to HOME_POSITION + 10 deg"
-cansend slcan0 326#000F00029AC5
+cansend slcan0 326#000F0002A9C5
 
 echo "rear_left_steer_joint commanded to HOME_POSITION + 10 deg"
 cansend slcan0 303#000F00029AC5

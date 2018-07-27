@@ -12,19 +12,19 @@ echo "===================================================="
 echo ""
 
 echo "front_left_steer_joint commanded to POSITIVE_LIMIT (HOME_POSITION + 30 deg)"
-cansend slcan0 30F#000F000FFA9E
+cansend slcan0 30F#000FFFF00563
 
 echo "front_right_steer_joint commanded to POSITIVE_LIMIT (HOME_POSITION + 30 deg)"
-cansend slcan0 312#000F000FFA9E
+cansend slcan0 312#000FFFF00563
 
 echo "mid_left_steer_joint commanded to POSITIVE_LIMIT (HOME_POSITION + 30 deg)"
-cansend slcan0 31F#000F000FFA9E
+cansend slcan0 31F#000FFFF00563
 
 echo "mid_right_steer joint commanded to POSITIVE_LIMIT (HOME_POSITION + 30 deg)"
-cansend slcan0 326#000F000FF9AE
+cansend slcan0 326#000FFFF00563
 
 echo "rear_left_steer_joint commanded to POSITIVE_LIMIT (HOME_POSITION + 30 deg)"
-cansend slcan0 303#000F000FFA9E
+cansend slcan0 303#000FFFF00563
 
 echo "rear_right_steer_joint commanded to POSITIVE_LIMIT (HOME_POSITION + 30 deg)"
-cansend slcan0 319#000F000FFA9E
+cansend slcan0 319#000FFFF00563
